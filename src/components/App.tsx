@@ -2,9 +2,12 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
 import { FunctionComponent } from 'react'
+import { usePWAInstall } from 'react-use-pwa-install'
 import { Theme } from './Theme'
 
 export const App: FunctionComponent = () => {
+	const install = usePWAInstall()
+
 	return (
 		<Theme>
 			<AppBar position="sticky">
@@ -21,7 +24,11 @@ export const App: FunctionComponent = () => {
 					<Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
 						Markdown viewer
 					</Typography>
-					<Button color="inherit">@todo</Button>
+					{install && (
+						<Button color="secondary" variant="contained" onClick={install}>
+							Install
+						</Button>
+					)}
 				</Toolbar>
 			</AppBar>
 			Hello World!
