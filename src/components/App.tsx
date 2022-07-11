@@ -1,12 +1,24 @@
+import FolderIcon from '@mui/icons-material/Folder'
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import MenuIcon from '@mui/icons-material/Menu'
-import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
+import {
+	AppBar,
+	Container,
+	IconButton,
+	Toolbar,
+	Typography,
+} from '@mui/material'
 import Button from '@mui/material/Button'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useCallback } from 'react'
 import { usePWAInstall } from 'react-use-pwa-install'
 import { Theme } from './Theme'
 
 export const App: FunctionComponent = () => {
 	const install = usePWAInstall()
+
+	const showNotImplemented = useCallback(() => {
+		alert('Not implemented.')
+	}, [])
 
 	return (
 		<Theme>
@@ -18,6 +30,7 @@ export const App: FunctionComponent = () => {
 						color="inherit"
 						aria-label="menu"
 						sx={{ mr: 2 }}
+						onClick={showNotImplemented}
 					>
 						<MenuIcon />
 					</IconButton>
@@ -31,21 +44,33 @@ export const App: FunctionComponent = () => {
 					)}
 				</Toolbar>
 			</AppBar>
-			Hello World!
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<Button variant="contained">Yes</Button>
+			<Container>
+				<div
+					style={{
+						textAlign: 'center',
+						paddingTop: '4em',
+						paddingBottom: '4em',
+					}}
+				>
+					<Typography variant="h4" gutterBottom>
+						To continue choose one of the following:
+					</Typography>
+					<Button
+						variant="contained"
+						endIcon={<InsertDriveFileIcon />}
+						onClick={showNotImplemented}
+					>
+						Open file
+					</Button>{' '}
+					<Button
+						variant="contained"
+						endIcon={<FolderIcon />}
+						onClick={showNotImplemented}
+					>
+						Open folder
+					</Button>
+				</div>
+			</Container>
 		</Theme>
 	)
 }
