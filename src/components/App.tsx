@@ -5,6 +5,7 @@ import {
 	AppBar,
 	Container,
 	IconButton,
+	Link,
 	Toolbar,
 	Typography,
 } from '@mui/material'
@@ -74,7 +75,9 @@ export const App: FunctionComponent = () => {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
-						Markdown viewer
+						<Link href="/" color="inherit" underline="hover">
+							Markdown viewer
+						</Link>
 					</Typography>
 					{install && (
 						<Button color="secondary" variant="contained" onClick={install}>
