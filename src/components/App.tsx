@@ -114,9 +114,12 @@ export const App: FunctionComponent = () => {
 					) : view.type === 'single-file' ? (
 						<>
 							<Typography variant="h4" gutterBottom>
-								{view.name}
+								<InsertDriveFileIcon /> {view.name}
 							</Typography>
-							<MarkdownView content={view.content} />
+							<MarkdownView
+								content={view.content}
+								onNavigationRequest={showNotImplemented}
+							/>
 						</>
 					) : view.type === 'directory' ? (
 						<>@TODO: directory</>
