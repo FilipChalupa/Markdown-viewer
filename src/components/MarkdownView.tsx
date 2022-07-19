@@ -8,16 +8,24 @@ export interface MarkdownViewProps {
 	onNavigationRequest: (href: string) => void
 }
 
+const isRelativeLink = (href: string) => {
+	return !href.startsWith('http://') && !href.startsWith('https://')
+}
+
 const Link: FunctionComponent<{
 	href: string
 	onNavigationRequest: MarkdownViewProps['onNavigationRequest']
 }> = ({ href, onNavigationRequest, ...otherProps }) => {
+	const isRelative = isRelativeLink(href)
+
 	return (
 		<a
-			href=""
+			href={isRelative ? '' : href}
 			onClick={(event) => {
-				event.preventDefault()
-				onNavigationRequest(href)
+				if (isRelative) {
+					event.preventDefault()
+					onNavigationRequest(href)
+				}
 			}}
 			{...otherProps}
 		/>
