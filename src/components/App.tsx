@@ -10,8 +10,10 @@ import {
 	Typography,
 } from '@mui/material'
 import Button from '@mui/material/Button'
+import { SnackbarProvider } from 'notistack'
 import { FunctionComponent, useCallback, useState } from 'react'
 import { usePWAInstall } from 'react-use-pwa-install'
+import { useToast } from '../utilities/useToast'
 import { MarkdownView } from './MarkdownView'
 import { Theme } from './Theme'
 
@@ -28,12 +30,13 @@ type View =
 			type: 'directory'
 	  }
 
-export const App: FunctionComponent = () => {
+const In: FunctionComponent = () => {
+	const showToast = useToast()
 	const install = usePWAInstall()
 	const [view, setView] = useState<View>({ type: 'landing' })
 
 	const showNotImplemented = useCallback(() => {
-		alert('Not implemented.')
+		showToast('This is not yet implemented.', 'error')
 	}, [])
 
 	const showFilePicker = useCallback(async () => {
@@ -61,7 +64,7 @@ export const App: FunctionComponent = () => {
 	}, [])
 
 	return (
-		<Theme>
+		<>
 			<AppBar position="sticky">
 				<Toolbar>
 					<IconButton
@@ -129,6 +132,22 @@ export const App: FunctionComponent = () => {
 					) : null}
 				</div>
 			</Container>
+		</>
+	)
+}
+
+export const App: FunctionComponent = () => {
+	return (
+		<Theme>
+			<SnackbarProvider
+				maxSnack={3}
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'right',
+				}}
+			>
+				<In />
+			</SnackbarProvider>
 		</Theme>
 	)
 }
