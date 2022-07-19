@@ -14,6 +14,7 @@ import { SnackbarProvider } from 'notistack'
 import { FunctionComponent, useCallback, useState } from 'react'
 import { usePWAInstall } from 'react-use-pwa-install'
 import { useToast } from '../utilities/useToast'
+import { DirectoryView } from './DirectoryView'
 import { MarkdownView } from './MarkdownView'
 import { Theme } from './Theme'
 
@@ -28,6 +29,7 @@ type View =
 	  }
 	| {
 			type: 'directory'
+			handle: FileSystemDirectoryHandle
 	  }
 
 const In: FunctionComponent = () => {
@@ -58,6 +60,15 @@ const In: FunctionComponent = () => {
 				name,
 				content,
 			})
+		} catch (error) {
+			console.error(error)
+		}
+	}, [])
+
+	const showDirectoryPicker = useCallback(async () => {
+		try {
+			const handle = await window.showDirectoryPicker()
+			setView({ type: 'directory', handle })
 		} catch (error) {
 			console.error(error)
 		}
@@ -112,7 +123,7 @@ const In: FunctionComponent = () => {
 							<Button
 								variant="contained"
 								endIcon={<FolderIcon />}
-								onClick={showNotImplemented}
+								onClick={showDirectoryPicker}
 							>
 								Open folder
 							</Button>
@@ -128,7 +139,7 @@ const In: FunctionComponent = () => {
 							/>
 						</>
 					) : view.type === 'directory' ? (
-						<>@TODO: directory</>
+						<DirectoryView handle={view.handle} />
 					) : null}
 				</div>
 			</Container>
