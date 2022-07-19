@@ -7,7 +7,5 @@ export interface DirectoryViewProps {
 export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 	handle,
 }) => {
-	console.log(handle)
-
 	return <div>@TODO: dir view</div>
 }
