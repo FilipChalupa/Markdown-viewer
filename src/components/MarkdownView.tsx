@@ -1,3 +1,4 @@
+import { Paper } from '@mui/material'
 import Markdown from 'markdown-to-jsx'
 import type { FunctionComponent } from 'react'
 import styles from './MarkdownView.module.css'
@@ -28,20 +29,22 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 	onNavigationRequest,
 }) => {
 	return (
-		<div className={styles.wrapper}>
-			<Markdown
-				options={{
-					overrides: {
-						a: {
-							component: Link,
-							props: {
-								onNavigationRequest,
+		<Paper elevation={12}>
+			<div className={styles.wrapper}>
+				<Markdown
+					options={{
+						overrides: {
+							a: {
+								component: Link,
+								props: {
+									onNavigationRequest,
+								},
 							},
 						},
-					},
-				}}>
-				{content}
-			</Markdown>
-		</div>
+					}}>
+					{content}
+				</Markdown>
+			</div>
+		</Paper>
 	)
 }
