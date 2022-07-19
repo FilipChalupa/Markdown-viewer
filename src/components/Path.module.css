@@ -1,14 +1,10 @@
-.breadcrumb {
+.item {
 	border: none;
 	background-color: transparent;
 	padding: 0;
 }
 
-.breadcrumb:hover,
-.breadcrumb:focus-visible {
+.item:hover,
+.item:focus-visible {
 	text-decoration: underline;
-}
-
-.file {
-	padding-top: 1em;
 }

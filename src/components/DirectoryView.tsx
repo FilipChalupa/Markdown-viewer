@@ -2,13 +2,11 @@ import FolderIcon from '@mui/icons-material/Folder'
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import {
-	Breadcrumbs,
 	List,
 	ListItem,
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
-	Typography,
 } from '@mui/material'
 import {
 	FunctionComponent,
@@ -19,8 +17,8 @@ import {
 } from 'react'
 import { assertNever } from '../utilities/assertNever'
 import { pathResolve } from '../utilities/pathResolve'
-import styles from './DirectoryView.module.css'
 import { MarkdownView } from './MarkdownView'
+import { Path } from './Path'
 
 export interface DirectoryViewProps {
 	handle: FileSystemDirectoryHandle
@@ -67,37 +65,7 @@ export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 
 	return (
 		<>
-			<Breadcrumbs>
-				{currentPathParts.map((part, i) =>
-					part === '' ? (
-						<span key="placeholder" />
-					) : (
-						<Typography
-							key={i}
-							color={
-								i === currentPathParts.length - 1 ||
-								(i === currentPathParts.length - 2 &&
-									currentPathParts.at(-1) === '')
-									? 'text.primary'
-									: 'text.secondary'
-							}
-							className={styles.breadcrumb}
-							component="button"
-							onClick={() => {
-								navigateTo(
-									'/' +
-										currentPathParts.slice(0, i + 1).join('/') +
-										(currentHandle.kind === 'directory' ||
-										i < currentPathParts.length - 1
-											? '/'
-											: '')
-								)
-							}}>
-							{part}
-						</Typography>
-					)
-				)}
-			</Breadcrumbs>
+			<Path parts={currentPathParts} navigateTo={navigateTo} />
 			<Entry handle={currentHandle} navigateTo={navigateTo} />
 		</>
 	)
@@ -137,14 +105,12 @@ const File: FunctionComponent<
 		return <>Loading</> // @TODO: show spinner or something
 	}
 	return (
-		<div className={styles.file}>
-			<MarkdownView
-				content={content}
-				onNavigationRequest={(href) => {
-					navigateTo(href)
-				}}
-			/>
-		</div>
+		<MarkdownView
+			content={content}
+			onNavigationRequest={(href) => {
+				navigateTo(href)
+			}}
+		/>
 	)
 }
 

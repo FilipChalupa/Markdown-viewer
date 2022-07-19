@@ -16,6 +16,7 @@ import { usePWAInstall } from 'react-use-pwa-install'
 import { useToast } from '../utilities/useToast'
 import { DirectoryView } from './DirectoryView'
 import { MarkdownView } from './MarkdownView'
+import { Path } from './Path'
 import { Theme } from './Theme'
 
 type View =
@@ -126,9 +127,7 @@ const In: FunctionComponent = () => {
 						</>
 					) : view.type === 'single-file' ? (
 						<>
-							<Typography variant="h4" gutterBottom>
-								<InsertDriveFileIcon /> {view.name}
-							</Typography>
+							<Path parts={[view.name]} />
 							<MarkdownView
 								content={view.content}
 								onNavigationRequest={showNotImplemented}

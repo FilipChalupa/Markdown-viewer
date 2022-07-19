@@ -29,22 +29,24 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 	onNavigationRequest,
 }) => {
 	return (
-		<Paper elevation={12}>
-			<div className={styles.wrapper}>
-				<Markdown
-					options={{
-						overrides: {
-							a: {
-								component: Link,
-								props: {
-									onNavigationRequest,
+		<div className={styles.wrapper}>
+			<Paper elevation={12}>
+				<div className={styles.content}>
+					<Markdown
+						options={{
+							overrides: {
+								a: {
+									component: Link,
+									props: {
+										onNavigationRequest,
+									},
 								},
 							},
-						},
-					}}>
-					{content}
-				</Markdown>
-			</div>
-		</Paper>
+						}}>
+						{content}
+					</Markdown>
+				</div>
+			</Paper>
+		</div>
 	)
 }
