@@ -22,5 +22,7 @@ module.exports = {
 				varsIgnorePattern: '^_',
 			},
 		],
+		'no-extra-semi': 'off',
+		'@typescript-eslint/no-extra-semi': 'off',
 	},
 }
