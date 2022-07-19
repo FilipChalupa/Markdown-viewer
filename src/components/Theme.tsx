@@ -17,7 +17,7 @@ export const Theme: FunctionComponent<{ children: ReactNode }> = ({
 					mode: prefersDarkMode ? 'dark' : 'light',
 				},
 			}),
-		[prefersDarkMode],
+		[prefersDarkMode]
 	)
 
 	return (

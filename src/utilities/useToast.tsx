@@ -12,12 +12,11 @@ export const useToast = () => {
 				aria-label="close"
 				color="inherit"
 				sx={{ p: 0.5 }}
-				onClick={() => closeSnackbar(id)}
-			>
+				onClick={() => closeSnackbar(id)}>
 				<CloseIcon />
 			</IconButton>
 		),
-		[closeSnackbar],
+		[closeSnackbar]
 	)
 
 	const showToast = useCallback(
@@ -27,7 +26,7 @@ export const useToast = () => {
 				action,
 			})
 		},
-		[enqueueSnackbar],
+		[action, enqueueSnackbar]
 	)
 
 	return showToast

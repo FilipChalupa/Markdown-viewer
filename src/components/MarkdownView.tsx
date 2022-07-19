@@ -39,8 +39,7 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 							},
 						},
 					},
-				}}
-			>
+				}}>
 				{content}
 			</Markdown>
 		</div>

@@ -39,7 +39,7 @@ const In: FunctionComponent = () => {
 
 	const showNotImplemented = useCallback(() => {
 		showToast('This is not yet implemented.', 'error')
-	}, [])
+	}, [showToast])
 
 	const showFilePicker = useCallback(async () => {
 		try {
@@ -84,8 +84,7 @@ const In: FunctionComponent = () => {
 						color="inherit"
 						aria-label="menu"
 						sx={{ mr: 2 }}
-						onClick={showNotImplemented}
-					>
+						onClick={showNotImplemented}>
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
@@ -106,8 +105,7 @@ const In: FunctionComponent = () => {
 						textAlign: 'center',
 						paddingTop: '4em',
 						paddingBottom: '4em',
-					}}
-				>
+					}}>
 					{view.type === 'landing' ? (
 						<>
 							<Typography variant="h4" gutterBottom>
@@ -116,15 +114,13 @@ const In: FunctionComponent = () => {
 							<Button
 								variant="contained"
 								endIcon={<InsertDriveFileIcon />}
-								onClick={showFilePicker}
-							>
+								onClick={showFilePicker}>
 								Open file
 							</Button>{' '}
 							<Button
 								variant="contained"
 								endIcon={<FolderIcon />}
-								onClick={showDirectoryPicker}
-							>
+								onClick={showDirectoryPicker}>
 								Open folder
 							</Button>
 						</>
@@ -155,8 +151,7 @@ export const App: FunctionComponent = () => {
 				anchorOrigin={{
 					vertical: 'bottom',
 					horizontal: 'right',
-				}}
-			>
+				}}>
 				<In />
 			</SnackbarProvider>
 		</Theme>
