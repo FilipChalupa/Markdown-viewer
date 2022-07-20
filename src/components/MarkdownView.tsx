@@ -58,6 +58,9 @@ const Picture: FunctionComponent<{
 				;(async () => {
 					const relativeSrc = pathResolve(path.path, src)
 					const [_, ...parts] = relativeSrc.split('/')
+					if (parts.length === 0) {
+						throw new Error('Path out of permission scope.')
+					}
 					const fileHandle = await (async () => {
 						let handle: FileSystemDirectoryHandle = path.rootHandle
 						while (parts.length > 0) {
