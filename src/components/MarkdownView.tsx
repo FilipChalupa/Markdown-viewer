@@ -7,7 +7,11 @@ import styles from './MarkdownView.module.css'
 export interface MarkdownViewProps {
 	content: string
 	onNavigationRequest: (href: string) => void
-	parentHandle?: FileSystemDirectoryHandle
+	parentHandle?: FileSystemDirectoryHandle // @TODO: remove
+	path?: {
+		rootHandle: FileSystemDirectoryHandle
+		path: string
+	}
 }
 
 const isRelativeLink = (href: string) => {
@@ -37,8 +41,8 @@ const Link: FunctionComponent<{
 
 const Picture: FunctionComponent<{
 	src: string
-	parentHandle: MarkdownViewProps['parentHandle']
-}> = ({ src, parentHandle, ...otherProps }) => {
+	path: MarkdownViewProps['path']
+}> = ({ src, path, ...otherProps }) => {
 	const [resolvedSrc, setResolvedSrc] = useState(() => {
 		const isRelative = isRelativeLink(src)
 
@@ -50,17 +54,33 @@ const Picture: FunctionComponent<{
 
 	useEffect(() => {
 		if (isRelativeLink(src)) {
-			if (parentHandle) {
+			if (path) {
 				;(async () => {
-					const path = pathResolve('.', src)
-					console.log('find', { path, src })
-					// @TODO use similar code to useEffect in DirectoryView
+					const relativeSrc = pathResolve(path.path, src)
+					const [_, ...parts] = relativeSrc.split('/')
+					const fileHandle = await (async () => {
+						let handle: FileSystemDirectoryHandle = path.rootHandle
+						while (parts.length > 0) {
+							const part = parts.shift()
+							if (part === undefined) {
+								break
+							}
+							if (parts.length === 0) {
+								return await handle.getFileHandle(part)
+							} else {
+								handle = await handle.getDirectoryHandle(part)
+							}
+						}
+						throw new Error('File not found.')
+					})()
+					const file = await fileHandle.getFile()
+					setResolvedSrc(URL.createObjectURL(file))
 				})()
 			}
 		} else {
 			setResolvedSrc(src)
 		}
-	}, [src, parentHandle])
+	}, [src, path])
 
 	return <img src={resolvedSrc} {...otherProps} />
 }
@@ -68,7 +88,7 @@ const Picture: FunctionComponent<{
 export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 	content,
 	onNavigationRequest,
-	parentHandle,
+	path,
 }) => {
 	return (
 		<div className={styles.wrapper}>
@@ -86,7 +106,7 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 								img: {
 									component: Picture,
 									props: {
-										parentHandle,
+										path,
 									},
 								},
 							},

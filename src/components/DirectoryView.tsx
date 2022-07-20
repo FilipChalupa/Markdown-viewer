@@ -25,15 +25,13 @@ export interface DirectoryViewProps {
 }
 
 export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
-	handle,
+	handle: rootHandle,
 }) => {
-	const root = handle.name + '/'
+	const root = rootHandle.name + '/'
 	const [currentPath, setCurrentPath] = useState(root)
-	const [parentHandle, setParentHandle] =
-		useState<FileSystemDirectoryHandle>(handle)
 	const [currentHandle, setCurrentHandle] = useState<
 		FileSystemFileHandle | FileSystemDirectoryHandle
-	>(handle)
+	>(rootHandle)
 
 	const navigateTo = useCallback(
 		(path: string) => {
@@ -48,14 +46,13 @@ export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 		;(async () => {
 			// @TODO: handle loading state
 			const [_, ...parts] = currentPathParts
-			let newHandle: FileSystemDirectoryHandle = handle
+			let newHandle: FileSystemDirectoryHandle = rootHandle
 			while (parts.length > 0) {
 				const part = parts.shift()
 				if (part === '' || part === undefined) {
 					break
 				}
 				if (part !== '' && parts.length === 0) {
-					setParentHandle(newHandle)
 					setCurrentHandle(await newHandle.getFileHandle(part))
 					return
 				} else {
@@ -64,14 +61,15 @@ export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 			}
 			setCurrentHandle(newHandle)
 		})()
-	}, [currentPathParts, handle])
+	}, [currentPathParts, rootHandle])
 
 	return (
 		<>
 			<Path parts={currentPathParts} navigateTo={navigateTo} />
 			<Entry
 				handle={currentHandle}
-				parentHandle={parentHandle}
+				rootHandle={rootHandle}
+				currentPath={currentPath}
 				navigateTo={navigateTo}
 			/>
 		</>
@@ -80,20 +78,23 @@ export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 
 interface EntryProps {
 	handle: FileSystemFileHandle | FileSystemDirectoryHandle
-	parentHandle: FileSystemDirectoryHandle
+	rootHandle: FileSystemDirectoryHandle
+	currentPath: string
 	navigateTo: (path: string) => void
 }
 
 const Entry: FunctionComponent<EntryProps> = ({
 	handle,
-	parentHandle,
+	rootHandle,
+	currentPath,
 	navigateTo,
 }) => {
 	if (handle.kind === 'file') {
 		return (
 			<File
 				handle={handle}
-				parentHandle={parentHandle}
+				rootHandle={rootHandle}
+				currentPath={currentPath}
 				navigateTo={navigateTo}
 			/>
 		)
@@ -108,8 +109,8 @@ const Entry: FunctionComponent<EntryProps> = ({
 const File: FunctionComponent<
 	{
 		handle: FileSystemFileHandle
-	} & Pick<EntryProps, 'navigateTo' | 'parentHandle'>
-> = ({ handle, parentHandle, navigateTo }) => {
+	} & Pick<EntryProps, 'navigateTo' | 'rootHandle' | 'currentPath'>
+> = ({ handle, rootHandle, currentPath, navigateTo }) => {
 	const [content, setContent] = useState<null | string>(null)
 	useEffect(() => {
 		;(async () => {
@@ -119,13 +120,21 @@ const File: FunctionComponent<
 		})()
 	}, [handle])
 
+	const path = useMemo(
+		() => ({
+			rootHandle,
+			path: currentPath,
+		}),
+		[currentPath, rootHandle]
+	)
+
 	if (content === null) {
 		return <>Loading</> // @TODO: show spinner or something
 	}
 	return (
 		<MarkdownView
 			content={content}
-			parentHandle={parentHandle}
+			path={path}
 			onNavigationRequest={(href) => {
 				navigateTo(href)
 			}}
