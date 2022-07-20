@@ -1,11 +1,13 @@
 import { Paper } from '@mui/material'
 import Markdown from 'markdown-to-jsx'
-import type { FunctionComponent } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
+import { pathResolve } from '../utilities/pathResolve'
 import styles from './MarkdownView.module.css'
 
 export interface MarkdownViewProps {
 	content: string
 	onNavigationRequest: (href: string) => void
+	parentHandle?: FileSystemDirectoryHandle
 }
 
 const isRelativeLink = (href: string) => {
@@ -23,6 +25,7 @@ const Link: FunctionComponent<{
 			href={isRelative ? '' : href}
 			onClick={(event) => {
 				if (isRelative) {
+					// @TODO: check parentHandle that path is accessible
 					event.preventDefault()
 					onNavigationRequest(href)
 				}
@@ -32,9 +35,40 @@ const Link: FunctionComponent<{
 	)
 }
 
+const Picture: FunctionComponent<{
+	src: string
+	parentHandle: MarkdownViewProps['parentHandle']
+}> = ({ src, parentHandle, ...otherProps }) => {
+	const [resolvedSrc, setResolvedSrc] = useState(() => {
+		const isRelative = isRelativeLink(src)
+
+		if (isRelative) {
+			return undefined
+		}
+		return src
+	})
+
+	useEffect(() => {
+		if (isRelativeLink(src)) {
+			if (parentHandle) {
+				;(async () => {
+					const path = pathResolve('.', src)
+					console.log('find', { path, src })
+					// @TODO use similar code to useEffect in DirectoryView
+				})()
+			}
+		} else {
+			setResolvedSrc(src)
+		}
+	}, [src, parentHandle])
+
+	return <img src={resolvedSrc} {...otherProps} />
+}
+
 export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 	content,
 	onNavigationRequest,
+	parentHandle,
 }) => {
 	return (
 		<div className={styles.wrapper}>
@@ -47,6 +81,12 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 									component: Link,
 									props: {
 										onNavigationRequest,
+									},
+								},
+								img: {
+									component: Picture,
+									props: {
+										parentHandle,
 									},
 								},
 							},

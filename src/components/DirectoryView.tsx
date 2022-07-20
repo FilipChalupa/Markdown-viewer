@@ -29,6 +29,8 @@ export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 }) => {
 	const root = handle.name + '/'
 	const [currentPath, setCurrentPath] = useState(root)
+	const [parentHandle, setParentHandle] =
+		useState<FileSystemDirectoryHandle>(handle)
 	const [currentHandle, setCurrentHandle] = useState<
 		FileSystemFileHandle | FileSystemDirectoryHandle
 	>(handle)
@@ -53,6 +55,7 @@ export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 					break
 				}
 				if (part !== '' && parts.length === 0) {
+					setParentHandle(newHandle)
 					setCurrentHandle(await newHandle.getFileHandle(part))
 					return
 				} else {
@@ -66,19 +69,34 @@ export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 	return (
 		<>
 			<Path parts={currentPathParts} navigateTo={navigateTo} />
-			<Entry handle={currentHandle} navigateTo={navigateTo} />
+			<Entry
+				handle={currentHandle}
+				parentHandle={parentHandle}
+				navigateTo={navigateTo}
+			/>
 		</>
 	)
 }
 
 interface EntryProps {
 	handle: FileSystemFileHandle | FileSystemDirectoryHandle
+	parentHandle: FileSystemDirectoryHandle
 	navigateTo: (path: string) => void
 }
 
-const Entry: FunctionComponent<EntryProps> = ({ handle, navigateTo }) => {
+const Entry: FunctionComponent<EntryProps> = ({
+	handle,
+	parentHandle,
+	navigateTo,
+}) => {
 	if (handle.kind === 'file') {
-		return <File handle={handle} navigateTo={navigateTo} />
+		return (
+			<File
+				handle={handle}
+				parentHandle={parentHandle}
+				navigateTo={navigateTo}
+			/>
+		)
 	} else if (handle.kind === 'directory') {
 		return <Directory handle={handle} navigateTo={navigateTo} />
 	} else {
@@ -90,8 +108,8 @@ const Entry: FunctionComponent<EntryProps> = ({ handle, navigateTo }) => {
 const File: FunctionComponent<
 	{
 		handle: FileSystemFileHandle
-	} & Pick<EntryProps, 'navigateTo'>
-> = ({ handle, navigateTo }) => {
+	} & Pick<EntryProps, 'navigateTo' | 'parentHandle'>
+> = ({ handle, parentHandle, navigateTo }) => {
 	const [content, setContent] = useState<null | string>(null)
 	useEffect(() => {
 		;(async () => {
@@ -107,6 +125,7 @@ const File: FunctionComponent<
 	return (
 		<MarkdownView
 			content={content}
+			parentHandle={parentHandle}
 			onNavigationRequest={(href) => {
 				navigateTo(href)
 			}}
