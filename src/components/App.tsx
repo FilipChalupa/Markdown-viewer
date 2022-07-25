@@ -24,6 +24,7 @@ import { styled } from '@mui/material/styles'
 import { SnackbarProvider } from 'notistack'
 import { FunctionComponent, useCallback, useState } from 'react'
 import { usePWAInstall } from 'react-use-pwa-install'
+import { version } from '../../package.json'
 import { useToast } from '../utilities/useToast'
 import { DirectoryView } from './DirectoryView'
 import { MarkdownView } from './MarkdownView'
@@ -169,6 +170,9 @@ const In: FunctionComponent = () => {
 							</ListItemButton>
 						</ListItem>
 					</List>
+					<Typography align="center" variant="body2" mt={4}>
+						Markdown Viewer version: {version}
+					</Typography>
 				</Box>
 			</Drawer>
 			<Container key={view.id}>
