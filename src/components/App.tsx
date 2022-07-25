@@ -2,6 +2,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import FolderIcon from '@mui/icons-material/Folder'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import MenuIcon from '@mui/icons-material/Menu'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import {
 	AppBar,
 	Box,
@@ -152,6 +153,19 @@ const In: FunctionComponent = () => {
 									<FolderIcon />
 								</ListItemIcon>
 								<ListItemText primary="Open Folder" />
+							</ListItemButton>
+						</ListItem>
+					</List>
+					<Divider />
+					<List>
+						<ListItem disablePadding>
+							<ListItemButton
+								LinkComponent={Link}
+								href="https://github.com/FilipChalupa/Markdown-viewer#markdown-viewer">
+								<ListItemIcon>
+									<OpenInNewIcon />
+								</ListItemIcon>
+								<ListItemText primary="About" />
 							</ListItemButton>
 						</ListItem>
 					</List>
