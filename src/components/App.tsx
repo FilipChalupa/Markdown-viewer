@@ -1,15 +1,25 @@
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import FolderIcon from '@mui/icons-material/Folder'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import MenuIcon from '@mui/icons-material/Menu'
 import {
 	AppBar,
+	Box,
 	Container,
+	Divider,
+	Drawer,
 	IconButton,
 	Link,
+	List,
+	ListItem,
+	ListItemButton,
+	ListItemIcon,
+	ListItemText,
 	Toolbar,
 	Typography,
 } from '@mui/material'
 import Button from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
 import { SnackbarProvider } from 'notistack'
 import { FunctionComponent, useCallback, useState } from 'react'
 import { usePWAInstall } from 'react-use-pwa-install'
@@ -19,7 +29,7 @@ import { MarkdownView } from './MarkdownView'
 import { Path } from './Path'
 import { Theme } from './Theme'
 
-type View =
+type View = { id: number } & (
 	| {
 			type: 'landing'
 	  }
@@ -32,11 +42,29 @@ type View =
 			type: 'directory'
 			handle: FileSystemDirectoryHandle
 	  }
+)
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+	display: 'flex',
+	alignItems: 'center',
+	padding: theme.spacing(0, 1),
+	...theme.mixins.toolbar,
+	justifyContent: 'flex-start',
+}))
 
 const In: FunctionComponent = () => {
 	const showToast = useToast()
 	const install = usePWAInstall()
-	const [view, setView] = useState<View>({ type: 'landing' })
+	const [view, setView] = useState<View>({ id: 0, type: 'landing' })
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+	const openDrawer = useCallback(() => {
+		setIsDrawerOpen(true)
+	}, [])
+
+	const closeDrawer = useCallback(() => {
+		setIsDrawerOpen(false)
+	}, [])
 
 	const showNotImplemented = useCallback(() => {
 		showToast('This is not yet implemented.', 'error')
@@ -56,11 +84,12 @@ const In: FunctionComponent = () => {
 			const file = await handle.getFile()
 			const { name } = file
 			const content = await file.text()
-			setView({
+			setView((view) => ({
+				id: view.id + 1,
 				type: 'single-file',
 				name,
 				content,
-			})
+			}))
 		} catch (error) {
 			console.error(error)
 		}
@@ -69,7 +98,7 @@ const In: FunctionComponent = () => {
 	const showDirectoryPicker = useCallback(async () => {
 		try {
 			const handle = await window.showDirectoryPicker()
-			setView({ type: 'directory', handle })
+			setView((view) => ({ id: view.id + 1, type: 'directory', handle }))
 		} catch (error) {
 			console.error(error)
 		}
@@ -85,7 +114,7 @@ const In: FunctionComponent = () => {
 						color="inherit"
 						aria-label="menu"
 						sx={{ mr: 2 }}
-						onClick={showNotImplemented}>
+						onClick={openDrawer}>
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
@@ -100,7 +129,35 @@ const In: FunctionComponent = () => {
 					)}
 				</Toolbar>
 			</AppBar>
-			<Container>
+			<Drawer open={isDrawerOpen} onClose={closeDrawer}>
+				<DrawerHeader>
+					<IconButton onClick={closeDrawer}>
+						<ChevronLeftIcon />
+					</IconButton>
+				</DrawerHeader>
+				<Divider />
+				<Box sx={{ width: 250 }} onClick={closeDrawer}>
+					<List>
+						<ListItem disablePadding>
+							<ListItemButton onClick={showFilePicker}>
+								<ListItemIcon>
+									<InsertDriveFileIcon />
+								</ListItemIcon>
+								<ListItemText primary="Open File" />
+							</ListItemButton>
+						</ListItem>
+						<ListItem disablePadding>
+							<ListItemButton onClick={showDirectoryPicker}>
+								<ListItemIcon>
+									<FolderIcon />
+								</ListItemIcon>
+								<ListItemText primary="Open Folder" />
+							</ListItemButton>
+						</ListItem>
+					</List>
+				</Box>
+			</Drawer>
+			<Container key={view.id}>
 				<div
 					style={{
 						textAlign: 'center',
@@ -116,13 +173,13 @@ const In: FunctionComponent = () => {
 								variant="contained"
 								endIcon={<InsertDriveFileIcon />}
 								onClick={showFilePicker}>
-								Open file
+								Open File
 							</Button>{' '}
 							<Button
 								variant="contained"
 								endIcon={<FolderIcon />}
 								onClick={showDirectoryPicker}>
-								Open folder
+								Open Folder
 							</Button>
 						</>
 					) : view.type === 'single-file' ? (
