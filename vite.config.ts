@@ -20,6 +20,25 @@ export default defineConfig({
 				description: '@TODO',
 				categories: ['productivity', 'utilities'],
 				related_applications: [],
+				// // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// // @ts-ignore
+				// file_handlers: [
+				// 	{
+				// 		action: '/',
+				// 		accept: {
+				// 			'text/markdown': ['.md'],
+				// 		},
+				// 		icons: [
+				// 			{
+				// 				src: 'icons/icon-384x384.png',
+				// 				sizes: '384x384',
+				// 				type: 'image/png',
+				// 				purpose: 'maskable any',
+				// 			},
+				// 		],
+				// 		launch_type: 'multiple-clients',
+				// 	},
+				// ],
 				icons: [
 					{
 						src: 'icons/icon-48x48.png',
