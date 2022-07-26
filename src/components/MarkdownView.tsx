@@ -12,6 +12,7 @@ export interface MarkdownViewProps {
 		rootHandle: FileSystemDirectoryHandle
 		path: string
 	}
+	showSourceCode?: boolean
 }
 
 const isRelativeLink = (href: string) => {
@@ -92,32 +93,44 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 	content,
 	onNavigationRequest,
 	path,
+	showSourceCode = false,
 }) => {
 	return (
 		<div className={styles.wrapper}>
-			<Paper elevation={12}>
-				<div className={styles.content}>
-					<Markdown
-						options={{
-							overrides: {
-								a: {
-									component: Link,
-									props: {
-										onNavigationRequest,
-									},
-								},
-								img: {
-									component: Picture,
-									props: {
-										path,
-									},
-								},
-							},
-						}}>
-						{content}
-					</Markdown>
+			{showSourceCode && (
+				<div className={styles.item}>
+					<Paper elevation={12}>
+						<div className={styles.code}>
+							<pre>{content}</pre>
+						</div>
+					</Paper>
 				</div>
-			</Paper>
+			)}
+			<div className={styles.item}>
+				<Paper elevation={12}>
+					<div className={styles.content}>
+						<Markdown
+							options={{
+								overrides: {
+									a: {
+										component: Link,
+										props: {
+											onNavigationRequest,
+										},
+									},
+									img: {
+										component: Picture,
+										props: {
+											path,
+										},
+									},
+								},
+							}}>
+							{content}
+						</Markdown>
+					</div>
+				</Paper>
+			</div>
 		</div>
 	)
 }

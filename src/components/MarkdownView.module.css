@@ -1,12 +1,28 @@
 .wrapper {
 	padding-top: 1em;
+	display: flex;
+	gap: 1em;
+	flex-wrap: wrap;
 }
 
-.content {
+.item {
+	flex-basis: 0;
+	flex-grow: 1;
+	display: grid;
+	min-width: 18rem;
+	overflow-x: auto;
+}
+
+.content,
+.code {
 	position: relative;
 	z-index: 0;
 	padding: 1em;
 	text-align: left;
+}
+
+.code {
+	font-family: monospace;
 }
 
 .content img {

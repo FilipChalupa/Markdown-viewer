@@ -22,10 +22,12 @@ import { Path } from './Path'
 
 export interface DirectoryViewProps {
 	handle: FileSystemDirectoryHandle
+	showSourceCode?: boolean
 }
 
 export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 	handle: rootHandle,
+	showSourceCode = false,
 }) => {
 	const root = rootHandle.name + '/'
 	const [currentPath, setCurrentPath] = useState(root)
@@ -71,6 +73,7 @@ export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 				rootHandle={rootHandle}
 				currentPath={currentPath}
 				navigateTo={navigateTo}
+				showSourceCode={showSourceCode}
 			/>
 		</>
 	)
@@ -81,6 +84,7 @@ interface EntryProps {
 	rootHandle: FileSystemDirectoryHandle
 	currentPath: string
 	navigateTo: (path: string) => void
+	showSourceCode: boolean
 }
 
 const Entry: FunctionComponent<EntryProps> = ({
@@ -88,6 +92,7 @@ const Entry: FunctionComponent<EntryProps> = ({
 	rootHandle,
 	currentPath,
 	navigateTo,
+	showSourceCode,
 }) => {
 	if (handle.kind === 'file') {
 		return (
@@ -96,6 +101,7 @@ const Entry: FunctionComponent<EntryProps> = ({
 				rootHandle={rootHandle}
 				currentPath={currentPath}
 				navigateTo={navigateTo}
+				showSourceCode={showSourceCode}
 			/>
 		)
 	} else if (handle.kind === 'directory') {
@@ -109,8 +115,11 @@ const Entry: FunctionComponent<EntryProps> = ({
 const File: FunctionComponent<
 	{
 		handle: FileSystemFileHandle
-	} & Pick<EntryProps, 'navigateTo' | 'rootHandle' | 'currentPath'>
-> = ({ handle, rootHandle, currentPath, navigateTo }) => {
+	} & Pick<
+		EntryProps,
+		'navigateTo' | 'rootHandle' | 'currentPath' | 'showSourceCode'
+	>
+> = ({ handle, rootHandle, currentPath, navigateTo, showSourceCode }) => {
 	const [content, setContent] = useState<null | string>(null)
 	useEffect(() => {
 		;(async () => {
@@ -138,6 +147,7 @@ const File: FunctionComponent<
 			onNavigationRequest={(href) => {
 				navigateTo(href)
 			}}
+			showSourceCode={showSourceCode}
 		/>
 	)
 }

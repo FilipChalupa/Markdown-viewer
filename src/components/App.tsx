@@ -1,4 +1,5 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import CodeIcon from '@mui/icons-material/Code'
 import FolderIcon from '@mui/icons-material/Folder'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -16,6 +17,7 @@ import {
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
+	Switch,
 	Toolbar,
 	Typography,
 } from '@mui/material'
@@ -59,6 +61,11 @@ const In: FunctionComponent = () => {
 	const install = usePWAInstall()
 	const [view, setView] = useState<View>({ id: 0, type: 'landing' })
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+	const [showSourceCode, setShowSourceCode] = useState(false)
+
+	const toggleShowSourceCode = useCallback(() => {
+		setShowSourceCode((value) => !value)
+	}, [])
 
 	const openDrawer = useCallback(() => {
 		setIsDrawerOpen(true)
@@ -90,6 +97,7 @@ const In: FunctionComponent = () => {
 			const file = await handle.getFile()
 			const { name } = file
 			const content = await file.text()
+			closeDrawer()
 			setView((view) => ({
 				id: view.id + 1,
 				type: 'single-file',
@@ -99,7 +107,7 @@ const In: FunctionComponent = () => {
 		} catch (error) {
 			console.error(error)
 		}
-	}, [showToast])
+	}, [closeDrawer, showToast])
 
 	const showDirectoryPicker = useCallback(async () => {
 		if (!('showDirectoryPicker' in window)) {
@@ -108,11 +116,12 @@ const In: FunctionComponent = () => {
 		}
 		try {
 			const handle = await window.showDirectoryPicker()
+			closeDrawer()
 			setView((view) => ({ id: view.id + 1, type: 'directory', handle }))
 		} catch (error) {
 			console.error(error)
 		}
-	}, [showToast])
+	}, [closeDrawer, showToast])
 
 	return (
 		<>
@@ -146,14 +155,14 @@ const In: FunctionComponent = () => {
 					</IconButton>
 				</DrawerHeader>
 				<Divider />
-				<Box sx={{ width: 250 }} onClick={closeDrawer}>
+				<Box sx={{ width: 250 }}>
 					<List>
 						<ListItem disablePadding>
 							<ListItemButton onClick={showFilePicker}>
 								<ListItemIcon>
 									<InsertDriveFileIcon />
 								</ListItemIcon>
-								<ListItemText primary="Open File" />
+								<ListItemText primary="Open file" />
 							</ListItemButton>
 						</ListItem>
 						<ListItem disablePadding>
@@ -161,8 +170,22 @@ const In: FunctionComponent = () => {
 								<ListItemIcon>
 									<FolderIcon />
 								</ListItemIcon>
-								<ListItemText primary="Open Folder" />
+								<ListItemText primary="Open folder" />
 							</ListItemButton>
+						</ListItem>
+					</List>
+					<Divider />
+					<List>
+						<ListItem>
+							<ListItemIcon>
+								<CodeIcon />
+							</ListItemIcon>
+							<ListItemText primary="Show source" />
+							<Switch
+								edge="end"
+								onChange={toggleShowSourceCode}
+								checked={showSourceCode}
+							/>
 						</ListItem>
 					</List>
 					<Divider />
@@ -199,13 +222,13 @@ const In: FunctionComponent = () => {
 								variant="contained"
 								endIcon={<InsertDriveFileIcon />}
 								onClick={showFilePicker}>
-								Open File
+								Open file
 							</Button>{' '}
 							<Button
 								variant="contained"
 								endIcon={<FolderIcon />}
 								onClick={showDirectoryPicker}>
-								Open Folder
+								Open folder
 							</Button>
 						</>
 					) : view.type === 'single-file' ? (
@@ -214,10 +237,14 @@ const In: FunctionComponent = () => {
 							<MarkdownView
 								content={view.content}
 								onNavigationRequest={showNotImplemented}
+								showSourceCode={showSourceCode}
 							/>
 						</>
 					) : view.type === 'directory' ? (
-						<DirectoryView handle={view.handle} />
+						<DirectoryView
+							handle={view.handle}
+							showSourceCode={showSourceCode}
+						/>
 					) : null}
 				</div>
 			</Container>
