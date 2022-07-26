@@ -26,6 +26,7 @@ import { styled } from '@mui/material/styles'
 import { SnackbarProvider } from 'notistack'
 import { FunctionComponent, useCallback, useState } from 'react'
 import { usePWAInstall } from 'react-use-pwa-install'
+import { useStorageBackedState } from 'use-storage-backed-state'
 import { version } from '../../package.json'
 import { useToast } from '../utilities/useToast'
 import { DirectoryView } from './DirectoryView'
@@ -61,11 +62,14 @@ const In: FunctionComponent = () => {
 	const install = usePWAInstall()
 	const [view, setView] = useState<View>({ id: 0, type: 'landing' })
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-	const [showSourceCode, setShowSourceCode] = useState(false)
+	const [showSourceCode, setShowSourceCode] = useStorageBackedState(
+		false,
+		'show-source-code'
+	)
 
 	const toggleShowSourceCode = useCallback(() => {
-		setShowSourceCode((value) => !value)
-	}, [])
+		setShowSourceCode(!showSourceCode)
+	}, [setShowSourceCode, showSourceCode])
 
 	const openDrawer = useCallback(() => {
 		setIsDrawerOpen(true)
