@@ -73,6 +73,10 @@ const In: FunctionComponent = () => {
 	}, [showToast])
 
 	const showFilePicker = useCallback(async () => {
+		if (!('showOpenFilePicker' in window)) {
+			showToast("Your browser doesn't support this feature.", 'error')
+			return
+		}
 		try {
 			const [handle] = await showOpenFilePicker({
 				types: [
@@ -95,16 +99,20 @@ const In: FunctionComponent = () => {
 		} catch (error) {
 			console.error(error)
 		}
-	}, [])
+	}, [showToast])
 
 	const showDirectoryPicker = useCallback(async () => {
+		if (!('showDirectoryPicker' in window)) {
+			showToast("Your browser doesn't support this feature.", 'error')
+			return
+		}
 		try {
 			const handle = await window.showDirectoryPicker()
 			setView((view) => ({ id: view.id + 1, type: 'directory', handle }))
 		} catch (error) {
 			console.error(error)
 		}
-	}, [])
+	}, [showToast])
 
 	return (
 		<>
