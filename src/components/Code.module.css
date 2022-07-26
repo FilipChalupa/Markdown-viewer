@@ -1,0 +1,28 @@
+.wrapper {
+	font-family: monospace;
+	counter-reset: line;
+}
+
+.line {
+	display: grid;
+	align-items: baseline;
+	grid-template-columns: 1.5em 1fr;
+	column-gap: 1em;
+	line-height: 1;
+}
+
+.line + .line {
+	padding-top: 0.5em;
+}
+
+.line::before {
+	counter-increment: line;
+	content: counter(line);
+	text-align: right;
+	font-size: 0.8em;
+	opacity: 0.7;
+}
+
+.code {
+	margin: 0;
+}

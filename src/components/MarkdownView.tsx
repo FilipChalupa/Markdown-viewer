@@ -2,6 +2,7 @@ import { Paper } from '@mui/material'
 import Markdown from 'markdown-to-jsx'
 import { FunctionComponent, useEffect, useState } from 'react'
 import { pathResolve } from '../utilities/pathResolve'
+import { Code } from './Code'
 import styles from './MarkdownView.module.css'
 
 export interface MarkdownViewProps {
@@ -101,7 +102,7 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 				<div className={styles.item}>
 					<Paper elevation={12}>
 						<div className={styles.code}>
-							<pre>{content}</pre>
+							<Code content={content} />
 						</div>
 					</Paper>
 				</div>
