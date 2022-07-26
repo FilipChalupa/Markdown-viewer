@@ -4,7 +4,7 @@
 	padding: 0;
 }
 
-.item:hover,
-.item:focus-visible {
+.item:is(button):hover,
+.item:is(button):focus-visible {
 	text-decoration: underline;
 }

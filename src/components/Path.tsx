@@ -10,22 +10,21 @@ export interface PathProps {
 export const Path: FunctionComponent<PathProps> = ({ parts, navigateTo }) => {
 	return (
 		<Breadcrumbs>
-			{parts.map((part, i) =>
-				part === '' && parts.length - 1 ? (
-					<span key="placeholder" />
-				) : (
+			{parts.map((part, i) => {
+				if (part === '' && i === parts.length - 1) {
+					return <span key="placeholder" />
+				}
+				const isLast =
+					i === parts.length - 1 ||
+					(i === parts.length - 2 && parts[i + 1] === '')
+				return (
 					<Typography
 						key={i}
-						color={
-							i === parts.length - 1 ||
-							(i === parts.length - 2 && parts.at(-1) === '')
-								? 'text.primary'
-								: 'text.secondary'
-						}
+						color={isLast ? 'text.primary' : 'text.secondary'}
 						className={styles.item}
-						component="button"
+						component={isLast ? 'span' : 'button'}
 						onClick={
-							navigateTo
+							!isLast && navigateTo
 								? () => {
 										navigateTo(
 											'/' +
@@ -38,7 +37,7 @@ export const Path: FunctionComponent<PathProps> = ({ parts, navigateTo }) => {
 						{part}
 					</Typography>
 				)
-			)}
+			})}
 		</Breadcrumbs>
 	)
 }
