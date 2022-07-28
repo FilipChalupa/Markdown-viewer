@@ -100,35 +100,39 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 		<div className={styles.wrapper}>
 			{showSourceCode && (
 				<div className={styles.item}>
-					<Paper elevation={12}>
-						<div className={styles.code}>
-							<Code content={content} />
+					<Paper elevation={12} className={styles.item_in}>
+						<div className={styles.item_content}>
+							<div className={styles.code}>
+								<Code content={content} />
+							</div>
 						</div>
 					</Paper>
 				</div>
 			)}
 			<div className={styles.item}>
-				<Paper elevation={12}>
-					<div className={styles.content}>
-						<Markdown
-							options={{
-								overrides: {
-									a: {
-										component: Link,
-										props: {
-											onNavigationRequest,
+				<Paper elevation={12} className={styles.item_in}>
+					<div className={styles.item_content}>
+						<div className={styles.content}>
+							<Markdown
+								options={{
+									overrides: {
+										a: {
+											component: Link,
+											props: {
+												onNavigationRequest,
+											},
+										},
+										img: {
+											component: Picture,
+											props: {
+												path,
+											},
 										},
 									},
-									img: {
-										component: Picture,
-										props: {
-											path,
-										},
-									},
-								},
-							}}>
-							{content}
-						</Markdown>
+								}}>
+								{content}
+							</Markdown>
+						</div>
 					</div>
 				</Paper>
 			</div>
