@@ -150,11 +150,9 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 	const [isBrokenImage, setIsBrokenImage] = useState(false)
 	const [isBrokenLink, setIsBrokenLink] = useState(false)
 	const setBrokenImage = useCallback(() => {
-		console.log('broken image')
 		setIsBrokenImage(true)
 	}, [])
 	const setBrokenLink = useCallback(() => {
-		console.log('broken link')
 		setIsBrokenLink(true)
 	}, [])
 	const contextValue = useMemo(
