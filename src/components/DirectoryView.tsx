@@ -23,11 +23,13 @@ import { Path } from './Path'
 export interface DirectoryViewProps {
 	handle: FileSystemDirectoryHandle
 	showSourceCode?: boolean
+	showDirectoryPicker?: () => void
 }
 
 export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 	handle: rootHandle,
 	showSourceCode = false,
+	showDirectoryPicker,
 }) => {
 	const root = rootHandle.name + '/'
 	const [currentPath, setCurrentPath] = useState(root)
@@ -74,6 +76,7 @@ export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 				currentPath={currentPath}
 				navigateTo={navigateTo}
 				showSourceCode={showSourceCode}
+				showDirectoryPicker={showDirectoryPicker}
 			/>
 		</>
 	)
@@ -85,6 +88,7 @@ interface EntryProps {
 	currentPath: string
 	navigateTo: (path: string) => void
 	showSourceCode: boolean
+	showDirectoryPicker: DirectoryViewProps['showDirectoryPicker']
 }
 
 const Entry: FunctionComponent<EntryProps> = ({
@@ -93,6 +97,7 @@ const Entry: FunctionComponent<EntryProps> = ({
 	currentPath,
 	navigateTo,
 	showSourceCode,
+	showDirectoryPicker,
 }) => {
 	if (handle.kind === 'file') {
 		return (
@@ -102,6 +107,7 @@ const Entry: FunctionComponent<EntryProps> = ({
 				currentPath={currentPath}
 				navigateTo={navigateTo}
 				showSourceCode={showSourceCode}
+				showDirectoryPicker={showDirectoryPicker}
 			/>
 		)
 	} else if (handle.kind === 'directory') {
@@ -117,9 +123,20 @@ const File: FunctionComponent<
 		handle: FileSystemFileHandle
 	} & Pick<
 		EntryProps,
-		'navigateTo' | 'rootHandle' | 'currentPath' | 'showSourceCode'
+		| 'navigateTo'
+		| 'rootHandle'
+		| 'currentPath'
+		| 'showSourceCode'
+		| 'showDirectoryPicker'
 	>
-> = ({ handle, rootHandle, currentPath, navigateTo, showSourceCode }) => {
+> = ({
+	handle,
+	rootHandle,
+	currentPath,
+	navigateTo,
+	showSourceCode,
+	showDirectoryPicker,
+}) => {
 	const [content, setContent] = useState<null | string>(null)
 	useEffect(() => {
 		;(async () => {
@@ -148,6 +165,7 @@ const File: FunctionComponent<
 				navigateTo(href)
 			}}
 			showSourceCode={showSourceCode}
+			showDirectoryPicker={showDirectoryPicker}
 		/>
 	)
 }

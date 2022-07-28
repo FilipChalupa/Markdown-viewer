@@ -1,4 +1,5 @@
-import { Paper } from '@mui/material'
+import FolderIcon from '@mui/icons-material/Folder'
+import { Alert, Button, Paper } from '@mui/material'
 import Markdown from 'markdown-to-jsx'
 import { FunctionComponent, useEffect, useState } from 'react'
 import { pathResolve } from '../utilities/pathResolve'
@@ -14,6 +15,7 @@ export interface MarkdownViewProps {
 		path: string
 	}
 	showSourceCode?: boolean
+	showDirectoryPicker?: () => void
 }
 
 const isRelativeLink = (href: string) => {
@@ -95,6 +97,7 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 	onNavigationRequest,
 	path,
 	showSourceCode = false,
+	showDirectoryPicker,
 }) => {
 	return (
 		<div className={styles.wrapper}>
@@ -136,6 +139,27 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 					</div>
 				</Paper>
 			</div>
+			{showDirectoryPicker && (
+				<div className={styles.supportNote}>
+					<Alert
+						severity="warning"
+						action={
+							<Button
+								color="warning"
+								variant="contained"
+								size="small"
+								style={{ whiteSpace: 'nowrap' }}
+								onClick={showDirectoryPicker}
+								endIcon={<FolderIcon />}>
+								Open folder
+							</Button>
+						}>
+						Some links and images may not work due to security reasons. Use{' '}
+						<strong>Open folder</strong> to locate a folder containing all the
+						required assets.
+					</Alert>
+				</div>
+			)}
 		</div>
 	)
 }

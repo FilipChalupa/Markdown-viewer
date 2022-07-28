@@ -38,3 +38,8 @@
 .content img {
 	max-width: 100%;
 }
+
+.supportNote {
+	width: 100%;
+	text-align: left;
+}

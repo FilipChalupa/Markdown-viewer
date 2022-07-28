@@ -242,12 +242,14 @@ const In: FunctionComponent = () => {
 								content={view.content}
 								onNavigationRequest={showNotImplemented}
 								showSourceCode={showSourceCode}
+								showDirectoryPicker={showDirectoryPicker}
 							/>
 						</>
 					) : view.type === 'directory' ? (
 						<DirectoryView
 							handle={view.handle}
 							showSourceCode={showSourceCode}
+							showDirectoryPicker={showDirectoryPicker}
 						/>
 					) : null}
 				</div>
