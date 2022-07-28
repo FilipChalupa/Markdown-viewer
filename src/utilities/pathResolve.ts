@@ -21,3 +21,5 @@ export const pathResolve = (oldPath: string, newPath: string) => {
 		}, [])
 		.join('/')
 }
+
+// @TODO: don't allow '/root/../root/file.md'
