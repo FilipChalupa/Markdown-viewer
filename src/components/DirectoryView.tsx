@@ -39,6 +39,10 @@ export const DirectoryView: FunctionComponent<DirectoryViewProps> = ({
 
 	const navigateTo = useCallback(
 		(path: string) => {
+			scrollTo({
+				top: 0,
+				left: 0,
+			})
 			setCurrentPath(pathResolve(currentPath, path))
 		},
 		[currentPath]
