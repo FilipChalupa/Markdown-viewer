@@ -11,7 +11,7 @@ export default defineConfig({
 		VitePWA({
 			registerType: 'autoUpdate',
 			manifest: {
-				name: 'Your Markdown Viewer',
+				name: 'Markdown Viewer',
 				short_name: 'MD viewer',
 				start_url: '.',
 				display: 'standalone',
