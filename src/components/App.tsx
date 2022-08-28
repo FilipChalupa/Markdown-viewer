@@ -25,6 +25,7 @@ import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import { SnackbarProvider } from 'notistack'
 import { FunctionComponent, useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { usePWAInstall } from 'react-use-pwa-install'
 import { useStorageBackedState } from 'use-storage-backed-state'
 import { version } from '../../package.json'
@@ -66,6 +67,7 @@ const In: FunctionComponent = () => {
 		false,
 		'show-source-code'
 	)
+	const { t } = useTranslation()
 
 	const toggleShowSourceCode = useCallback(() => {
 		setShowSourceCode(!showSourceCode)
@@ -220,19 +222,19 @@ const In: FunctionComponent = () => {
 					{view.type === 'landing' ? (
 						<>
 							<Typography variant="h4" gutterBottom>
-								To continue choose one of the following:
+								{t('welcome')}
 							</Typography>
 							<Button
 								variant="contained"
 								endIcon={<InsertDriveFileIcon />}
 								onClick={showFilePicker}>
-								Open file
+								{t('open.file')}
 							</Button>{' '}
 							<Button
 								variant="contained"
 								endIcon={<FolderIcon />}
 								onClick={showDirectoryPicker}>
-								Open folder
+								{t('open.file')}
 							</Button>
 						</>
 					) : view.type === 'single-file' ? (
