@@ -82,12 +82,12 @@ const In: FunctionComponent = () => {
 	}, [])
 
 	const showNotImplemented = useCallback(() => {
-		showToast('This is not yet implemented.', 'error')
-	}, [showToast])
+		showToast(t('error.notImplemented'), 'error')
+	}, [showToast, t])
 
 	const showFilePicker = useCallback(async () => {
 		if (!('showOpenFilePicker' in window)) {
-			showToast("Your browser doesn't support this feature.", 'error')
+			showToast(t('error.notSupportedByBrowser'), 'error')
 			return
 		}
 		try {
@@ -113,11 +113,11 @@ const In: FunctionComponent = () => {
 		} catch (error) {
 			console.error(error)
 		}
-	}, [closeDrawer, showToast])
+	}, [closeDrawer, showToast, t])
 
 	const showDirectoryPicker = useCallback(async () => {
 		if (!('showDirectoryPicker' in window)) {
-			showToast("Your browser doesn't support this feature.", 'error')
+			showToast(t('error.notSupportedByBrowser'), 'error')
 			return
 		}
 		try {
@@ -127,7 +127,7 @@ const In: FunctionComponent = () => {
 		} catch (error) {
 			console.error(error)
 		}
-	}, [closeDrawer, showToast])
+	}, [closeDrawer, showToast, t])
 
 	return (
 		<>
@@ -168,7 +168,7 @@ const In: FunctionComponent = () => {
 								<ListItemIcon>
 									<InsertDriveFileIcon />
 								</ListItemIcon>
-								<ListItemText primary="Open file" />
+								<ListItemText primary={t('open.file')} />
 							</ListItemButton>
 						</ListItem>
 						<ListItem disablePadding>
@@ -176,7 +176,7 @@ const In: FunctionComponent = () => {
 								<ListItemIcon>
 									<FolderIcon />
 								</ListItemIcon>
-								<ListItemText primary="Open folder" />
+								<ListItemText primary={t('open.directory')} />
 							</ListItemButton>
 						</ListItem>
 					</List>
@@ -186,7 +186,7 @@ const In: FunctionComponent = () => {
 							<ListItemIcon>
 								<CodeIcon />
 							</ListItemIcon>
-							<ListItemText primary="Show source" />
+							<ListItemText primary={t('show.source')} />
 							<Switch
 								edge="end"
 								onChange={toggleShowSourceCode}
@@ -203,7 +203,7 @@ const In: FunctionComponent = () => {
 								<ListItemIcon>
 									<OpenInNewIcon />
 								</ListItemIcon>
-								<ListItemText primary="About" />
+								<ListItemText primary={t('about')} />
 							</ListItemButton>
 						</ListItem>
 					</List>

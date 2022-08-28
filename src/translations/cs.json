@@ -4,5 +4,14 @@
 		"file": "Otevřít soubor",
 		"directory": "Otevřít složku"
 	},
+	"show": {
+		"source": "Zobrazovat kód"
+	},
+	"error": {
+		"linkToUnreachableFile": "Odkaz vede na soubor, ke kterému nebyl udělen přístup.",
+		"notImplemented": "Tato funkce není zatím implementována.",
+		"notSupportedByBrowser": "Váš prohlížeč tuto funkci nepodporuje."
+	},
+	"about": "Více",
 	"version": "Markdown Viewer verze: {{version}}"
 }

@@ -11,6 +11,7 @@ import {
 	useMemo,
 	useState,
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import { pathResolve } from '../utilities/pathResolve'
 import { useToast } from '../utilities/useToast'
 import { Code } from './Code'
@@ -64,6 +65,8 @@ const Link: FunctionComponent<{
 	path: MarkdownViewProps['path']
 	onNavigationRequest: MarkdownViewProps['onNavigationRequest']
 }> = ({ href, onNavigationRequest, path, ...otherProps }) => {
+	const { t } = useTranslation()
+
 	const isRelative = isRelativeLink(href)
 	const { setBrokenLink } = useContext(SecurityNoteContext)
 	const [isValidLink, setIsValidLink] = useState(() => !isRelative)
@@ -91,7 +94,7 @@ const Link: FunctionComponent<{
 					if (isValidLink) {
 						onNavigationRequest(href)
 					} else {
-						showToast('This link links to an unreachable file.', 'error')
+						showToast(t('error.linkToUnreachableFile'), 'error')
 					}
 				}
 			}}
@@ -147,6 +150,8 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 	showSourceCode = false,
 	showDirectoryPicker,
 }) => {
+	const { t } = useTranslation()
+
 	const [isBrokenImage, setIsBrokenImage] = useState(false)
 	const [isBrokenLink, setIsBrokenLink] = useState(false)
 	const setBrokenImage = useCallback(() => {
@@ -232,9 +237,10 @@ export const MarkdownView: FunctionComponent<MarkdownViewProps> = ({
 									style={{ whiteSpace: 'nowrap' }}
 									onClick={showDirectoryPicker}
 									endIcon={<FolderIcon />}>
-									Open folder
+									{t('open.directory')}
 								</Button>
 							}>
+							{/* @TODO: translate */}
 							Some{' '}
 							{brokenElements.map(({ type, value }, i) =>
 								type === 'element' ? (

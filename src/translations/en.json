@@ -4,5 +4,14 @@
 		"file": "Open file",
 		"directory": "Open folder"
 	},
+	"show": {
+		"source": "Show source"
+	},
+	"error": {
+		"linkToUnreachableFile": "This link links to an unreachable file.",
+		"notImplemented": "This is not yet implemented.",
+		"notSupportedByBrowser": "Your browser doesn't support this feature."
+	},
+	"about": "About",
 	"version": "Markdown Viewer version: {{version}}"
 }
