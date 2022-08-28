@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
 import { App } from './components/App'
 import './index.css'
+import csTranslation from './translations/cs.json'
+import enTranslation from './translations/en.json'
 
 i18n
 	.use(initReactI18next)
@@ -12,18 +14,10 @@ i18n
 	.init({
 		resources: {
 			en: {
-				translation: {
-					welcome: 'To continue choose one of the following:',
-					'open.file': 'Open file',
-					'open.directory': 'Open folder',
-				},
+				translation: enTranslation,
 			},
 			cs: {
-				translation: {
-					welcome: 'Pro pokračování zvolte jednu z možností níže:',
-					'open.file': 'Otevřít soubor',
-					'open.directory': 'Otevřít složku',
-				},
+				translation: csTranslation,
 			},
 		},
 		fallbackLng: 'en',

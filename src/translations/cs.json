@@ -1,0 +1,6 @@
+{
+	"welcome": "Pro pokračování zvolte jednu z možností níže:",
+	"open.file": "Otevřít soubor",
+	"open.directory": "Otevřít složku",
+	"version": "Markdown Viewer verze: {{version}}"
+}

@@ -1,0 +1,6 @@
+{
+	"welcome": "To continue choose one of the following:",
+	"open.file": "Open file",
+	"open.directory": "Open folder",
+	"version": "Markdown Viewer version: {{version}}"
+}

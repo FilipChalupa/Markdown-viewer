@@ -208,7 +208,7 @@ const In: FunctionComponent = () => {
 						</ListItem>
 					</List>
 					<Typography align="center" variant="body2" mt={4}>
-						Markdown Viewer version: {version}
+						{t('version', { version })}
 					</Typography>
 				</Box>
 			</Drawer>
